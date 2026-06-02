@@ -35,14 +35,15 @@
 
 <style lang="scss">
   .terminal {
+    background-color: #000;
     border: 1px solid #b9b9b9;
     border-radius: 0 0 10px 10px;
     color: #53b236;
     height: 150px;
     margin: 50px 0;
-    padding: 27px 15px;
+    padding: 28px 20px;
     position: relative;
-    width: 94%;
+    width: 100%;
   }
 
   .terminal__body {
@@ -51,7 +52,7 @@
 
   .terminal__header {
     height: 30px;
-    width: 100%;
+    width: calc(100% + 2px);
     background-color: #2a2a28;
     display: flex;
     position: absolute;

@@ -39,6 +39,10 @@ body {
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   gap: 14px;
   margin-top: 50px;
+
+  &--small-gap {
+    margin-top: 25px;
+  }
 }
 
 .response {

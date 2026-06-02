@@ -15,17 +15,7 @@ export const questions = {
   lightOrDarkBackground: {
     step: 2,
     questionType: C.MULTIPLE_CHOICE,
-    response: "Dont' worry...you can change this later on.",
+    response: "Dont' worry, you can change this later on.",
     questionTitle: 'What background mode do you prefer?',
-    questions: [
-      {
-        text: 'Light?',
-        nextQuestionKey: '',
-      },
-      {
-        text: 'Dark?',
-        nextQuestionKey: '',
-      },
-    ],
   },
 };

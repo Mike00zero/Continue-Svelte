@@ -1,14 +1,10 @@
 <script>
-  import TitleComponent from './TitleComponent.svelte';
-
-  export let questionTitle = '';
   /**
    * @type {any[] | null | undefined}
    */
    export let questions = [];
+   export let onClick = () => {};
 </script>
-
-<TitleComponent {questionTitle} />
 
 <div class="choices">
   {#each questions as question}

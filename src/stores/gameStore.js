@@ -11,32 +11,76 @@ const initialState = {
   answers: [],
 };
 
+const saveState = (state = {}) => {
+  localStorage.setItem('savedGameState', JSON.stringify(state));
+  console.log('State saved to localStorage:', state);
+}
+
+const loadState = () => {
+  const savedState = localStorage.getItem('savedGameState');
+  if (savedState) {
+    try {
+      const parsedState = JSON.parse(savedState);
+      console.log('Loaded state from localStorage:', parsedState);
+      return parsedState;
+    } catch (error) {
+      console.error('Error parsing saved game state:', error);
+      return null;
+    }
+  }
+  return null;
+}
+
 /**
  * @param {{ questions?: { whatsYourName: { step: number; questionType: string; questionTitle: string; textboxPlaceholderText: string; questions: { nextQuestionKey: string; }[]; }; lightOrDarkBackground: { step: number; questionType: string; response: string; questionTitle: string; questions: { text: string; nextQuestionKey: string; }[]; }; }; nextQuestionKey?: string; playAttempts?: number; playerName?: string; bgColor?: string; answers: any; }} state
  * @param {{ type: any; payload: any; }} action
  */
 function reducer(state, action) {
+  let newState;
+
   switch (action.type) {
     case C.ANSWER_QUESTION:
-      return {
+      newState = {
         ...state,
         answers: [...state.answers, action.payload],
       };
+
+      saveState(newState);
+
+      return newState;
 
     case C.RESET_GAME:
       return { ...initialState };
 
     case C.SET_QUESTION_KEY:
-      return {
+      newState = {
         ...state,
         nextQuestionKey: action.payload,
       };
 
+      saveState(newState);
+
+      return newState;
+
     case C.SET_PLAYER_NAME:
-      return {
+      newState = {
         ...state,
         playerName: action.payload,
       };
+
+      saveState(newState);
+
+      return newState;
+      
+    case C.SET_BG_COLOR:
+      newState = {
+        ...state,
+        bgColor: action.payload,
+      };
+
+      saveState(newState);
+
+      return newState;
 
     default:
       return state;
@@ -44,7 +88,9 @@ function reducer(state, action) {
 }
 
 function createGameStore() {
-  const { subscribe, set, update } = writable({ ...initialState });
+  const loadedState = loadState() || initialState;
+
+  const { subscribe, set, update } = writable({ ...loadedState });
 
   return {
     subscribe,
