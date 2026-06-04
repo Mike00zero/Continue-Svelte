@@ -6,6 +6,10 @@ export const RESET_GAME = 'RESET_GAME';
 export const SET_QUESTION_KEY = 'SET_QUESTION_KEY';
 export const SET_PLAYER_NAME = 'SET_PLAYER_NAME';
 export const SET_BG_COLOR = 'SET_BG_COLOR';
+export const SET_COLOR_CHANGE_OPTION = 'SET_COLOR_CHANGE_OPTION';
+export const SET_RESPONSE = 'SET_RESPONSE';
+export const SET_FORCE_HIDE_BTNS = 'SET_FORCE_HIDE_BTNS';
+export const SET_REFRESH_COUNT = 'SET_REFRESH_COUNT';
 
 export const commonNames = [
   'James', 'John', 'Robert', 'Michael', 'Mike', 'William', 'David', 'Richard',

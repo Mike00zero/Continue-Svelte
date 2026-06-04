@@ -9,11 +9,14 @@ const initialState = {
   playerName: '',
   bgColor: '#000',
   answers: [],
+  colorChangeOption: null,
+  forceHideBtns: false,
+  overrideResponse: '',
+  refreshCount: 0,
 };
 
 const saveState = (state = {}) => {
   localStorage.setItem('savedGameState', JSON.stringify(state));
-  console.log('State saved to localStorage:', state);
 }
 
 const loadState = () => {
@@ -21,7 +24,6 @@ const loadState = () => {
   if (savedState) {
     try {
       const parsedState = JSON.parse(savedState);
-      console.log('Loaded state from localStorage:', parsedState);
       return parsedState;
     } catch (error) {
       console.error('Error parsing saved game state:', error);
@@ -76,6 +78,46 @@ function reducer(state, action) {
       newState = {
         ...state,
         bgColor: action.payload,
+      };
+
+      saveState(newState);
+
+      return newState;
+
+    case C.SET_COLOR_CHANGE_OPTION:
+      newState = {
+        ...state,
+        colorChangeOption: action.payload,
+      };
+
+      saveState(newState);
+
+      return newState;
+
+    case C.SET_RESPONSE:
+      newState = {
+        ...state,
+        overrideResponse: action.payload,
+      };
+
+      saveState(newState);
+
+      return newState;
+
+    case C.SET_FORCE_HIDE_BTNS:
+      newState = {
+        ...state,
+        forceHideBtns: action.payload,
+      };
+
+      saveState(newState);
+
+      return newState;
+
+    case C.SET_REFRESH_COUNT:
+      newState = {
+        ...state,
+        refreshCount: action.payload,
       };
 
       saveState(newState);

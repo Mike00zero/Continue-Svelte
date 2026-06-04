@@ -46,10 +46,6 @@
     width: 100%;
   }
 
-  .terminal__body {
-    position: absolute;
-  }
-
   .terminal__header {
     height: 30px;
     width: calc(100% + 2px);
