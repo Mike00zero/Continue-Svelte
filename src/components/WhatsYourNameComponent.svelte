@@ -5,12 +5,11 @@
   import { commonNames, uncommonNames, SET_PLAYER_NAME, SET_QUESTION_KEY } from '@/constants';
   import { gameStore } from '@/stores/gameStore';
 
-  export let questionTitle = '';
-  export let textboxPlaceholderText = '';
-  /**
-   * @type {{ nextQuestionKey: any; }[]}
-   */
-   export let questions = [];
+  let {
+    questionTitle = '', 
+    textboxPlaceholderText = '', 
+    questions = []
+  } = $props();
 
   let showBtn = false;
   let name = '';
@@ -18,9 +17,6 @@
   let keepTrackOfName = 1;
   let disableTextbox = false;
   let showContinueBtn = false;
-  /**
-   * @type {number | undefined}
-   */
   let inputTimer;
 
   function getRandomName() {
@@ -72,7 +68,6 @@
   }
 
   function handleContinue() {
-    console.log('Continuing...');
     const nextQuestionKey = questions?.[0]?.nextQuestionKey;
 
     if (nextQuestionKey) {

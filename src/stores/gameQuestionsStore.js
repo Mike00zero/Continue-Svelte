@@ -14,8 +14,18 @@ export const questions = {
   },
   lightOrDarkBackground: {
     step: 2,
-    questionType: C.MULTIPLE_CHOICE,
+    questionType: C.BACKGROUND_COLOR,
     response: "Dont' worry, you can change this later on.",
     questionTitle: 'What background mode do you prefer?',
+    questions: [
+      {
+        nextQuestionKey: 'clickTheButton',
+      },
+    ],
+  },
+  clickTheButton: {
+    step: 3,
+    questionType: C.CLICK_THE_BUTTON,
+    questionTitle: 'This one should be easy... Just click the button below.',
   },
 };

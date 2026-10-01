@@ -7,7 +7,7 @@
   import { gameStore } from '@/stores/gameStore';
   import TitleComponent from '@/common/TitleComponent.svelte';
 
-  export let clickColorCounter = 0;
+  let { clickColorCounter = 0 } = $props();
 
   let state = null
   let currentQuestionProps = [];
@@ -28,8 +28,6 @@
     response = currentQuestionProps?.response || '';
 
     const navigationEntry = performance.getEntriesByType('navigation')[0];
-
-    console.log(navigationEntry.type);
 
     if (navigationEntry.type === 'reload') {
         gameStore.dispatch({ type: C.SET_RESPONSE, payload: "No..." });
@@ -52,36 +50,43 @@
   const handleContinue = () => {
     showBtns = false;
 
-
-    if (!state.forceHideBtns &&continueCount === 1 && lightDarkColorCount < 5) {
+    if (!state.forceHideBtns && continueCount === 1 && lightDarkColorCount < 5) {
         gameStore.dispatch({ type: C.SET_COLOR_CHANGE_OPTION, payload: state.bgColor});
-        response = "If you would like to change the background color, just click the button in the top right corner. Go on, give it a try.";    
-    }
-
-    if(state.forceHideBtns || continueCount === 2) {
-        gameStore.dispatch({ type: C.SET_QUESTION_KEY, payload: currentQuestionProps.nextQuestionKey });
+        response = "If you would like to change the background color, just click the button in the top right corner. Go on, give it a try."; 
+        continueCount++;
         return;
     }
 
-    continueCount++;
+    const nextQuestionKey = currentQuestionProps?.questions?.[0]?.nextQuestionKey;
+
+    if(state.forceHideBtns || continueCount === 2) {
+        gameStore.dispatch({ type: C.SET_QUESTION_KEY, payload: nextQuestionKey });
+        continueCount++;
+        return;
+    }
+
+    // backup just in case
+    gameStore.dispatch({ type: C.SET_QUESTION_KEY, payload: nextQuestionKey });
   }
 
-  $: if(clickColorCounter === 2 && lightDarkColorCount < 5) {
-    response = "Listen, I said you can change the color; I never said what color you could change it to. Just pick one and let's move on.";
-  }
+  $effect(() => {
+    if(clickColorCounter === 2 && lightDarkColorCount < 5) {
+      response = "Listen, I said you can change the color; I never said what color you could change it to. Just pick one and let's move on.";
+    }
 
-  $: if(lightDarkColorCount === 5) {
-    response = "Alright, I see you like changing colors. I was trying to be nice but since you are being too difficult, I took away the option of allowing you to change it. Hope you enjoy being stuck with the random color. Let's just move on to the next question.";
-    showBtns = false;
-    gameStore.dispatch({ type: C.SET_BG_COLOR, payload: randomColor() });
-    gameStore.dispatch({ type: C.SET_COLOR_CHANGE_OPTION, payload: null });
-    gameStore.dispatch({ type: C.SET_FORCE_HIDE_BTNS, payload: true });
-    gameStore.dispatch({ type: C.SET_RESPONSE, payload: "Don't try refreshing. You had your chance. Lets move on." });
-  }
+    if (lightDarkColorCount === 5) {
+      response = "Alright, I see you like changing colors. I was trying to be nice but since you are being too difficult, I took away the option of allowing you to change it. Hope you enjoy being stuck with this random color. Let's just move on to the next question.";
+      showBtns = false;
+      gameStore.dispatch({ type: C.SET_BG_COLOR, payload: randomColor() });
+      gameStore.dispatch({ type: C.SET_COLOR_CHANGE_OPTION, payload: null });
+      gameStore.dispatch({ type: C.SET_FORCE_HIDE_BTNS, payload: true });
+      gameStore.dispatch({ type: C.SET_RESPONSE, payload: "Don't try refreshing. You had your chance. Lets move on." });
+    }
 
-  $: if (state?.overrideResponse) {
+    if (state?.overrideResponse) {
         response = state.overrideResponse;
     }
+  });
 </script>
 
 <TitleComponent {questionTitle} />

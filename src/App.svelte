@@ -5,6 +5,7 @@
   import { gameStore } from '@/stores/gameStore';
   import WhatsYourNameComponent from '@/components/WhatsYourNameComponent.svelte';
   import BackgroundColor from '@/components/BackgroundColor.svelte';
+  import ClickTheButton from '@/components/ClickTheButton.svelte';
 
   let clickColorCounter = 0
 
@@ -30,14 +31,18 @@
       clickColorCounter++;
       gameStore.dispatch({ type: C.SET_BG_COLOR, payload: color });
   }
+
+  console.log('$gameStore', $gameStore);
 </script>
 
 <main class="game">
   <div id="screen" class="screen">
     {#if questionTypeKey === C.WHATS_YOUR_NAME}
       <WhatsYourNameComponent {...currentQuestionProps} />
-    {:else if questionTypeKey === C.MULTIPLE_CHOICE}
+    {:else if questionTypeKey === C.BACKGROUND_COLOR}
       <BackgroundColor {clickColorCounter} />
+    {:else if questionTypeKey === C.CLICK_THE_BUTTON}
+      <ClickTheButton {...currentQuestionProps} />
     {:else}
       <p>Question type not found.</p>
     {/if}
